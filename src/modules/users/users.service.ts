@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { User } from './user.entity';
 import { v4 as uuid } from 'uuid';
+
+import { User } from './user.entity';
 import { HashHelper } from '../../helpers/hash.helper';
 
 

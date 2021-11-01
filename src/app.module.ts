@@ -10,9 +10,10 @@ import { AuthController } from './modules/auth/auth.controller';
 import { usersProviders } from './providers/users.providers';
 import { JwtHelper } from './helpers/jwt.helper';
 import { QuestionsController } from './modules/questions/questions.controller';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [UsersModule, QuestionsModule, AuthModule],
+  imports: [UsersModule, QuestionsModule, AuthModule, ConfigModule.forRoot()],
   controllers: [AppController],
   providers: [AppService, ...databaseProviders, ...usersProviders, JwtHelper],
   exports: [...databaseProviders],

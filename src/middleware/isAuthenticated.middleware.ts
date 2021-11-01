@@ -1,5 +1,6 @@
 import { NextFunction, Response } from 'express';
 import { Inject, NestMiddleware } from '@nestjs/common';
+
 import { JwtHelper } from '../helpers/jwt.helper';
 import { User } from '../modules/users/user.entity';
 
@@ -7,7 +8,6 @@ export class IsAuthenticatedMiddleware implements NestMiddleware {
   constructor(@Inject('USERS_REPOSITORY') private usersRepository: typeof User,
               private jwtHelper: JwtHelper) {
   }
-
 
   async use(req: any, res: Response, next: NextFunction) {
     const token = req.headers['authorization'];

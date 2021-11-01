@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 
-
 export class HashHelper {
   
   async hashedPassword(password): Promise<string> {
