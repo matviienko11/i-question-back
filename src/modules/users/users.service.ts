@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { User } from './user.entity';
 import { v4 as uuid } from 'uuid';
+import { HashHelper } from '../../helpers/hash.helper';
 
-const bcrypt = require('bcrypt');
 
 @Injectable()
 export class UsersService {
-  constructor(@Inject('USERS_REPOSITORY') private usersRepository: typeof User) {
+  constructor(@Inject('USERS_REPOSITORY') private usersRepository: typeof User, private hashHelper: HashHelper) {
   }
   
   async findAll() {
@@ -18,15 +18,13 @@ export class UsersService {
   }
   
   async create(req) {
-    
-    const hash = await bcrypt.hash(req.body.password, 10);
     return this.usersRepository.create({
       id: uuid(),
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       phone: req.body.phone,
       email: req.body.email,
-      password: hash,
+      password: await this.hashHelper.hashedPassword(req.body.password),
     });
   }
   
