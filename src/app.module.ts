@@ -3,10 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './modules/users/users.module';
 import { QuestionsModule } from './modules/questions/questions.module';
+import { databaseProviders } from './providers/database.providers';
 
 @Module({
   imports: [UsersModule, QuestionsModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ...databaseProviders],
+  exports: [...databaseProviders],
 })
 export class AppModule {}
