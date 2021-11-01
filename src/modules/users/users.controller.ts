@@ -11,6 +11,11 @@ export class UsersController {
     return this.usersService.findAll();
   }
   
+  @Get(':id')
+  findOne(@Req() req) {
+    return this.usersService.findOne(req.params.id)
+  }
+  
   @Post('register')
   create(@Req() req) {
     return this.usersService.create(req);
