@@ -8,7 +8,4 @@ export class Question extends Model {
   
   @Column
   question: string;
-  
-  @Column
-  answer: string;
 }

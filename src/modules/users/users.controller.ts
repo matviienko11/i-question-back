@@ -18,7 +18,7 @@ export class UsersController {
   
   @Patch(':id')
   update(@Req() req) {
-    return this.usersService.update(req)
+    return this.usersService.update(req);
   }
   
   @Delete(':id')
