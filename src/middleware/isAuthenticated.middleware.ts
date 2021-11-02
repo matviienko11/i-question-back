@@ -19,7 +19,7 @@ export class IsAuthenticatedMiddleware implements NestMiddleware {
     const user = await this.usersRepository.findOne({ where: { id: parsedToken.id } })
     if (!user) {
       res.statusCode = 400;
-      res.json({ message: 'Your token is corrupted' });
+      res.json({ message: 'No such user' });
     } else {
       req.user = user;
       next();
