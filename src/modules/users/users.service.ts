@@ -4,7 +4,6 @@ import { v4 as uuid } from 'uuid';
 import { User } from './user.entity';
 import { HashHelper } from '../../helpers/hash.helper';
 
-
 @Injectable()
 export class UsersService {
   constructor(@Inject('USERS_REPOSITORY') private usersRepository: typeof User, private hashHelper: HashHelper) {

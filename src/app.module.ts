@@ -11,9 +11,10 @@ import { usersProviders } from './providers/users.providers';
 import { JwtHelper } from './helpers/jwt.helper';
 import { QuestionsController } from './modules/questions/questions.controller';
 import { ConfigModule } from '@nestjs/config';
+import { AnswersModule } from './modules/answers/answers.module';
 
 @Module({
-  imports: [UsersModule, QuestionsModule, AuthModule, ConfigModule.forRoot()],
+  imports: [UsersModule, QuestionsModule, AuthModule, ConfigModule.forRoot(), AnswersModule],
   controllers: [AppController],
   providers: [AppService, ...databaseProviders, ...usersProviders, JwtHelper],
   exports: [...databaseProviders],
@@ -22,6 +23,6 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(IsAuthenticatedMiddleware)
-      .forRoutes(QuestionsController);
+      .forRoutes();
   }
 }
