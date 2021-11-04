@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req } from '@nestjs/common';
+import { Controller, Get, Param, Patch, Post, Req } from '@nestjs/common';
 import { AnswersService } from './answers.service';
 
 @Controller('answers')
@@ -18,7 +18,12 @@ export class AnswersController {
   }
   
   @Get(':userId')
-  getAnswer(@Req() req) {
-    return this.answerService.getAnswer(req);
+  getAnswer(@Param('userId') id: string) {
+    return this.answerService.getAnswerByUserId(id);
+  }
+  
+  @Patch(':questionId')
+  updateQuestion(@Req() req) {
+    return this.answerService.updateQuestionStatus(req);
   }
 }

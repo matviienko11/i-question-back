@@ -23,7 +23,19 @@ export class AnswersService {
     return this.userQuestionRepository.findAll({ include: [Question, User] });
   }
   
-  getAnswer(req) {
-    return this.userQuestionRepository.findOne({ include: [Question, User], where: { userId: req.params.userId } });
+  getAnswerByUserId(userId) {
+    return this.userQuestionRepository.findOne({ include: [Question, User], where: { userId } });
+  }
+  
+  getAnswerByQuestionId(questionId) {
+    return this.userQuestionRepository.findOne({ include: [Question, User], where: { questionId } });
+  }
+  
+  updateQuestionStatus(req) {
+    return this.userQuestionRepository.update(
+      { status: 'answered' },
+      { where: { questionId: req.params.questionId } }
+    )
+      .then(() => this.getAnswerByQuestionId(req.params.questionId));
   }
 }
