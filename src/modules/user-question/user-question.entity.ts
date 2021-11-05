@@ -3,7 +3,7 @@ import { BelongsTo, Column, DataType, Default, ForeignKey, Model, PrimaryKey, Ta
 import { User } from '../users/user.entity';
 import { Question } from '../questions/question.entity';
 
-type Status = 'pending' | 'answered';
+type Status = 'new' | 'pending' | 'answered';
 
 @Table
 export class UserQuestion extends Model {
@@ -29,8 +29,8 @@ export class UserQuestion extends Model {
   @Column
   answer: string;
   
-  @Default('pending')
-  @Column(DataType.ENUM('pending', 'answered'))
+  @Default('new')
+  @Column(DataType.ENUM('new', 'pending', 'answered'))
   status: Status;
   
 }

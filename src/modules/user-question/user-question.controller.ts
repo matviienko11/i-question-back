@@ -1,10 +1,10 @@
 import { Controller, Get, Param, Patch, Post, Req } from '@nestjs/common';
-import { AnswersService } from './answers.service';
+import { UserQuestionService } from './user-question.service';
 
-@Controller('answers')
-export class AnswersController {
+@Controller('user-question')
+export class UserQuestionController {
   
-  constructor(private answerService: AnswersService) {
+  constructor(private answerService: UserQuestionService) {
   }
   
   @Get()
@@ -16,6 +16,12 @@ export class AnswersController {
   submitAnswer(@Req() req) {
     return this.answerService.submitAnswer(req);
   }
+  
+  @Post('game/:userId')
+  start(@Param('userId') id: string) {
+    return this.answerService.set(id)
+  }
+
   
   @Get(':userId')
   getAnswer(@Param('userId') id: string) {
