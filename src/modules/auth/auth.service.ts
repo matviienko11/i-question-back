@@ -12,12 +12,22 @@ export class AuthService {
   }
   
   async login(req) {
-    const user = await this.usersRepository.findOne({ where: { email: req.body.email }});
-    if(user) {
-      const isEqual = await this.hashHelper.compareHashes(req.body.password, user.password)
+    const user = await this.usersRepository.findOne({ where: { email: req.body.email } });
+    if (user) {
+      const isEqual = await this.hashHelper.compareHashes(req.body.password, user.password);
       if (isEqual) {
         return await this.jwtHelper.assignToken(user);
       }
     }
+  }
+  
+  async getUserInfo(body) {
+    const user = await this.usersRepository.findOne({ where: { email: body.email } });
+    return {
+      id: user.id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email
+    };
   }
 }
