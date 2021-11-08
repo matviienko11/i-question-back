@@ -17,9 +17,9 @@ export class UserQuestionController {
     return this.answerService.submitAnswer(req);
   }
   
-  @Post('game/:userId')
-  start(@Param('userId') id: string) {
-    return this.answerService.set(id)
+  @Post('game/:userId/')
+  start(@Param('userId') userId: string) {
+    return this.answerService.findNewQuestion(userId);
   }
 
   

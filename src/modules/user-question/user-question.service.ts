@@ -24,30 +24,18 @@ export class UserQuestionService {
     return this.userQuestionRepository.findAll({ include: [Question, User] });
   }
   
-  async set(userId) {
-    // const questionIdsFromTable = await this.userQuestionRepository.findAll({ where: { userId } }).then(data => data.map(i => i.questionId))
-    // const questionIdsFromPool = await this.questionsRepository.findAll().then(questions => questions.map(q => q.id));
-    // const randomId = this.randomQuestionIdFinder(questionIdsFromPool);
-    // const isInTable = questionIdsFromTable.includes(randomId);
-    const { isInTable, randomId } = await this.randomShit(userId)
-    if (!isInTable) {
-      return this.userQuestionRepository.create({
-        id: uuid(),
-        userId,
-        questionId: randomId,
-      })
-    } else {
-      return 'Suck my dick';
+  async findNewQuestion(userId) {
+    const randomId = await this.handleRandomIdSelection(userId);
+    if (!randomId) {
+      return {
+        message: 'Sorry, but no new questions for you'
+      };
     }
-
-  }
-  
-  private async randomShit(userId) {
-    const questionIdsFromTable = await this.userQuestionRepository.findAll({ where: { userId } }).then(data => data.map(i => i.questionId))
-    const questionIdsFromPool = await this.questionsRepository.findAll().then(questions => questions.map(q => q.id));
-    const randomId = questionIdsFromPool[Math.floor(Math.random() * questionIdsFromPool.length)];
-    const isInTable = questionIdsFromTable.includes(randomId);
-    return { isInTable, randomId }
+    return this.userQuestionRepository.create({
+      id: uuid(),
+      userId,
+      questionId: randomId
+    });
   }
   
   getAnswerByUserId(userId) {
@@ -64,5 +52,13 @@ export class UserQuestionService {
       { where: { questionId: req.params.questionId } }
     )
       .then(() => this.getAnswerByQuestionId(req.params.questionId));
+  }
+  
+  private async handleRandomIdSelection(userId) {
+    const allQuestionsIds = await this.questionsRepository.findAll().then(questions => questions.map(q => q.id));
+    const questionIdsFromTable = await this.userQuestionRepository.findAll({ where: { userId } }).then(data => data.map(i => i.questionId));
+    const arrToChooseIdFrom = allQuestionsIds.filter((i: string) => !questionIdsFromTable.includes(i));
+    if (!arrToChooseIdFrom.length) return null;
+    return arrToChooseIdFrom[Math.floor(Math.random() * arrToChooseIdFrom.length)];
   }
 }
