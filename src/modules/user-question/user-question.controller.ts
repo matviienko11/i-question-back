@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Patch, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Req } from '@nestjs/common';
 
 import { UserQuestionService } from './user-question.service';
 import { ApiTags } from '@nestjs/swagger';
@@ -31,8 +31,8 @@ export class UserQuestionController {
   }
   
   @Patch(':userId/answered/:questionId/')
-  setAnswered(@Param('userId') userId: string, @Param('questionId') questionId: string) {
-    return this.answerService.setAnsweredStatus(userId, questionId);
+  setAnswered(@Param('userId') userId: string, @Param('questionId') questionId: string, @Body() body) {
+    return this.answerService.setAnsweredStatus(userId, questionId, body);
   }
   
   @Get('game/:userId/')

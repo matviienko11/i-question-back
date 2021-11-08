@@ -36,9 +36,9 @@ export class UserQuestionService {
     }, { where: { userId: req.params.userId, questionId: req.params.questionId } });
   }
   
-  setAnsweredStatus(userId, questionId) {
+  setAnsweredStatus(userId, questionId, body) {
     return this.userQuestionRepository.update(
-      { status: 'answered' },
+      { status: body.status },
       { where: { userId, questionId } }
     );
   }
@@ -48,11 +48,11 @@ export class UserQuestionService {
   }
   
   getAllPendingQuestionsByUser(userId) {
-    return this.userQuestionRepository.findAll({ where: { userId, status: 'pending' } });
+    return this.userQuestionRepository.findAll({ where: { userId, status: 'pending' }, include: [Question] });
   }
   
   getAllAnsweredQuestionsByUser(userId) {
-    return this.userQuestionRepository.findAll({ where: { userId, status: 'answered' } });
+    return this.userQuestionRepository.findAll({ where: { userId, status: 'answered' }, include: [Question] });
   }
   
   private async handleRandomIdSelection(userId) {
