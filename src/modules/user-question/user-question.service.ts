@@ -23,7 +23,10 @@ export class UserQuestionService {
       id: uuid(),
       userId,
       questionId: randomId
-    });
+    }).then(() => this.userQuestionRepository.findOne({
+      where: { userId, questionId: randomId },
+      include: [Question]
+    }));
   }
   
   submitAnswer(req) {

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Patch, Post, Req } from '@nestjs/common';
+import { Controller, Get, Param, Patch, Req } from '@nestjs/common';
 
 import { UserQuestionService } from './user-question.service';
 import { ApiTags } from '@nestjs/swagger';
@@ -35,7 +35,7 @@ export class UserQuestionController {
     return this.answerService.setAnsweredStatus(userId, questionId);
   }
   
-  @Post('game/:userId/')
+  @Get('game/:userId/')
   start(@Param('userId') userId: string) {
     return this.answerService.findNewQuestion(userId);
   }
