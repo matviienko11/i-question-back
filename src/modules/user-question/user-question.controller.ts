@@ -30,9 +30,9 @@ export class UserQuestionController {
     return this.answerService.submitAnswer(req);
   }
   
-  @Patch(':userId/answered/:questionId/')
-  setAnswered(@Param('userId') userId: string, @Param('questionId') questionId: string, @Body() body) {
-    return this.answerService.setAnsweredStatus(userId, questionId, body);
+  @Patch(':userId/status/:questionId/')
+  setStatus(@Param('userId') userId: string, @Param('questionId') questionId: string, @Body() body) {
+    return this.answerService.setStatus(userId, questionId, body);
   }
   
   @Get('game/:userId/')

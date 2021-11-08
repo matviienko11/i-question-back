@@ -36,7 +36,8 @@ export class UserQuestionService {
     }, { where: { userId: req.params.userId, questionId: req.params.questionId } });
   }
   
-  setAnsweredStatus(userId, questionId, body) {
+  setStatus(userId, questionId, body) {
+    console.log(body.status)
     return this.userQuestionRepository.update(
       { status: body.status },
       { where: { userId, questionId } }
