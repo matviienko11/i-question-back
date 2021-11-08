@@ -1,27 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserQuestion } from './user-question.entity';
-import { User } from '../users/user.entity';
-import { Question } from '../questions/question.entity';
+
 import { v4 as uuid } from 'uuid';
+
+import { UserQuestion } from './user-question.entity';
+import { Question } from '../questions/question.entity';
 
 @Injectable()
 export class UserQuestionService {
   
   constructor(@Inject('USERS_QUESTIONS_REPOSITORY') private userQuestionRepository: typeof UserQuestion,
               @Inject('QUESTIONS_REPOSITORY') private questionsRepository: typeof Question) {
-  }
-  
-  submitAnswer(req) {
-    return this.userQuestionRepository.create({
-      id: uuid(),
-      userId: req.params.userId,
-      questionId: req.params.questionId,
-      answer: req.body.answer
-    }, { include: [Question, User] });
-  }
-  
-  getAllAnswers() {
-    return this.userQuestionRepository.findAll({ include: [Question, User] });
   }
   
   async findNewQuestion(userId) {
@@ -38,20 +26,30 @@ export class UserQuestionService {
     });
   }
   
-  getAnswerByUserId(userId) {
-    return this.userQuestionRepository.findOne({ include: [Question, User], where: { userId } });
+  submitAnswer(req) {
+    return this.userQuestionRepository.update({
+      answer: req.body.answer,
+      status: 'pending'
+    }, { where: { userId: req.params.userId, questionId: req.params.questionId } });
   }
   
-  getAnswerByQuestionId(questionId) {
-    return this.userQuestionRepository.findOne({ include: [Question, User], where: { questionId } });
-  }
-  
-  updateQuestionStatus(req) {
+  setAnsweredStatus(userId, questionId) {
     return this.userQuestionRepository.update(
       { status: 'answered' },
-      { where: { questionId: req.params.questionId } }
-    )
-      .then(() => this.getAnswerByQuestionId(req.params.questionId));
+      { where: { userId, questionId } }
+    );
+  }
+  
+  getAllAnswersByUser(userId) {
+    return this.userQuestionRepository.findAll({ where: { userId } });
+  }
+  
+  getAllPendingQuestionsByUser(userId) {
+    return this.userQuestionRepository.findAll({ where: { userId, status: 'pending' } });
+  }
+  
+  getAllAnsweredQuestionsByUser(userId) {
+    return this.userQuestionRepository.findAll({ where: { userId, status: 'answered' } });
   }
   
   private async handleRandomIdSelection(userId) {
