@@ -1,7 +1,9 @@
 import { Controller, Get, Param, Patch, Post, Req } from '@nestjs/common';
 
 import { UserQuestionService } from './user-question.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('answers')
 @Controller('user-question')
 export class UserQuestionController {
   
