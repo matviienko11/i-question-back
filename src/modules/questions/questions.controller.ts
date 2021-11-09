@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 
 import { QuestionsService } from './questions.service';
 import { ApiTags } from '@nestjs/swagger';
@@ -14,13 +14,22 @@ export class QuestionsController {
     return this.questionsService.findAll();
   }
   
+  @Get('paginated')
+  findAllPaginated(
+    @Query('page') page = 1,
+    @Query('limit') limit = 3) {
+    return this.questionsService.findAllPaginated(page, limit);
+  }
+  
   @Post('new-question')
   create(@Body() body) {
     return this.questionsService.create(body);
   }
   
   @Patch(':id')
-  update(@Param('id') id: string, @Body() body) {
+  update(
+    @Param('id') id: string,
+    @Body() body) {
     return this.questionsService.update(id, body);
   }
   

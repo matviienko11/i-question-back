@@ -12,6 +12,20 @@ export class QuestionsService {
     return this.questionsRepository.findAll<Question>();
   }
   
+  async findAllPaginated(currentPage, limit) {
+    const { count, rows: data } = await this.questionsRepository.findAndCountAll({
+      offset: (currentPage - 1) * limit,
+      limit: Number(limit)
+    });
+    const totalPages = Math.ceil(count / limit);
+    return {
+      count,
+      data,
+      page: Number(currentPage),
+      totalPages,
+    };
+  }
+  
   async findOne(id) {
     return this.questionsRepository.findOne({ where: { id } });
   }
@@ -20,14 +34,14 @@ export class QuestionsService {
     return this.questionsRepository.create({
       id: uuid(),
       question: body.question,
-      category: body.category,
+      category: body.category
     });
   }
   
   async update(id: string, body: any) {
     return this.questionsRepository.update(
       {
-        question: body.question,
+        question: body.question
       },
       {
         where: { id }
@@ -35,10 +49,10 @@ export class QuestionsService {
       .then(() => this.findOne(id));
   }
   
-  async delete(id: string): Promise<Question[]> {
+  async delete(id: string) {
     return this.questionsRepository.destroy(
       { where: { id } }
-    )
-      .then(() => this.findAll());
+    );
+    // .then(() => this.findAll());
   }
 }
