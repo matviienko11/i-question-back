@@ -10,8 +10,8 @@ export class AuthController {
   }
   
   @Post('login')
-  login(@Req() req) {
-    return this.authService.login(req);
+  login(@Body() body) {
+    return this.authService.login(body);
   }
   
   @Post('user-info')

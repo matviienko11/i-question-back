@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Patch, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 
 import { QuestionsService } from './questions.service';
 import { ApiTags } from '@nestjs/swagger';
@@ -15,17 +15,17 @@ export class QuestionsController {
   }
   
   @Post('new-question')
-  create(@Req() req) {
-    return this.questionsService.create(req);
+  create(@Body() body) {
+    return this.questionsService.create(body);
   }
   
   @Patch(':id')
-  update(@Req() req) {
-    return this.questionsService.update(req);
+  update(@Param('id') id: string, @Body() body) {
+    return this.questionsService.update(id, body);
   }
   
   @Delete(':id')
-  delete(@Req() req) {
-    return this.questionsService.delete(req);
+  delete(@Param() id) {
+    return this.questionsService.delete(id);
   }
 }

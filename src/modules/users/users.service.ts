@@ -9,43 +9,44 @@ export class UsersService {
   constructor(@Inject('USERS_REPOSITORY') private usersRepository: typeof User, private hashHelper: HashHelper) {
   }
   
-  async findAll() {
-    return this.usersRepository.findAll<User>();
+  async findAllUsers() {
+    return this.usersRepository.findAll<User>({ where: { role: 'user' } });
   }
   
   async findOne(id) {
     return this.usersRepository.findOne({ where: { id } });
   }
   
-  async create(req) {
+  async create(body) {
     return this.usersRepository.create({
       id: uuid(),
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      phone: req.body.phone,
-      email: req.body.email,
-      password: await this.hashHelper.hashedPassword(req.body.password),
+      first_name: body.first_name,
+      last_name: body.last_name,
+      phone: body.phone,
+      email: body.email,
+      password: await this.hashHelper.hashedPassword(body.password),
+      role: body.role
     });
   }
   
-  async update(req) {
+  async update(id: string, body) {
     return this.usersRepository.update(
       {
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        phone: req.body.phone,
-        email: req.body.email
+        first_name: body.first_name,
+        last_name: body.last_name,
+        phone: body.phone,
+        email: body.email
       },
       {
-        where: { id: req.params.id }
+        where: { id }
       })
-      .then(() => this.findOne(req.params.id));
+      .then(() => this.findOne(id));
   }
   
-  async delete(req) {
+  async delete(id) {
     return this.usersRepository.destroy(
-      { where: { id: req.params.id } }
+      { where: { id } }
     )
-      .then(() => this.findAll());
+      .then(() => this.findAllUsers());
   }
 }

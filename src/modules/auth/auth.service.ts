@@ -11,10 +11,10 @@ export class AuthService {
               private jwtHelper: JwtHelper) {
   }
   
-  async login(req) {
-    const user = await this.usersRepository.findOne({ where: { email: req.body.email } });
+  async login(body) {
+    const user = await this.usersRepository.findOne({ where: { email: body.email } });
     if (user) {
-      const isEqual = await this.hashHelper.compareHashes(req.body.password, user.password);
+      const isEqual = await this.hashHelper.compareHashes(body.password, user.password);
       if (isEqual) {
         return await this.jwtHelper.assignToken(user);
       }

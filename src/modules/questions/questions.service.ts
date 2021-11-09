@@ -16,27 +16,28 @@ export class QuestionsService {
     return this.questionsRepository.findOne({ where: { id } });
   }
   
-  async create(req) {
+  async create(body) {
     return this.questionsRepository.create({
       id: uuid(),
-      question: req.body.question,
+      question: body.question,
+      category: body.category,
     });
   }
   
-  async update(req) {
+  async update(id: string, body: any) {
     return this.questionsRepository.update(
       {
-        question: req.body.question,
+        question: body.question,
       },
       {
-        where: { id: req.params.id }
+        where: { id }
       })
-      .then(() => this.findOne(req.params.id));
+      .then(() => this.findOne(id));
   }
   
-  async delete(req) {
+  async delete(id: string): Promise<Question[]> {
     return this.questionsRepository.destroy(
-      { where: { id: req.params.id } }
+      { where: { id } }
     )
       .then(() => this.findAll());
   }

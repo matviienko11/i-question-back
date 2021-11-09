@@ -1,4 +1,6 @@
-import { Table, Column, Model, PrimaryKey } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, DataType, Default } from 'sequelize-typescript';
+
+type Category = 'history' | 'geography' | 'economics' | 'mathematics' | 'languages' | 'law' | 'medicine' | 'chemistry' | 'other';
 
 @Table
 export class Question extends Model {
@@ -8,4 +10,8 @@ export class Question extends Model {
   
   @Column
   question: string;
+  
+  @Default('other')
+  @Column(DataType.ENUM('history', 'geography', 'economics', 'mathematics', 'languages', 'law', 'medicine', 'chemistry', 'biology', 'other'))
+  category: Category;
 }
