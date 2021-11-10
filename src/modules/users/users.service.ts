@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
 
 import { User } from './user.entity';
 import { HashHelper } from '../../helpers/hash.helper';
@@ -15,18 +14,6 @@ export class UsersService {
   
   async findOne(id) {
     return this.usersRepository.findOne({ where: { id } });
-  }
-  
-  async create(body) {
-    return this.usersRepository.create({
-      id: uuid(),
-      first_name: body.first_name,
-      last_name: body.last_name,
-      phone: body.phone,
-      email: body.email,
-      password: await this.hashHelper.hashedPassword(body.password),
-      role: body.role
-    });
   }
   
   async update(id: string, body) {

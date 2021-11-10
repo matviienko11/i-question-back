@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, UseGuards } from '@nestjs/common';
 
 import { ApiTags } from '@nestjs/swagger';
 
@@ -20,11 +20,6 @@ export class UsersController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id)
-  }
-  
-  @Post('register')
-  create(@Body() body) {
-    return this.usersService.create(body);
   }
   
   @Patch(':id')
