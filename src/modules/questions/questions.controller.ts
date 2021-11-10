@@ -1,9 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 
-import { QuestionsService } from './questions.service';
 import { ApiTags } from '@nestjs/swagger';
 
+import { QuestionsService } from './questions.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+
 @ApiTags('questions')
+@UseGuards(JwtAuthGuard)
 @Controller('questions')
 export class QuestionsController {
   constructor(private questionsService: QuestionsService) {

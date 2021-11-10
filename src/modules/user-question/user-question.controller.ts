@@ -1,9 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Req, UseGuards } from '@nestjs/common';
 
-import { UserQuestionService } from './user-question.service';
 import { ApiTags } from '@nestjs/swagger';
 
+import { UserQuestionService } from './user-question.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+
 @ApiTags('answers')
+@UseGuards(JwtAuthGuard)
 @Controller('user-question')
 export class UserQuestionController {
   
