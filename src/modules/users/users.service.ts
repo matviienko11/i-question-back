@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { User } from './user.entity';
 import { HashHelper } from '../../helpers/hash.helper';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -16,13 +17,13 @@ export class UsersService {
     return this.usersRepository.findOne({ where: { id } });
   }
   
-  async update(id: string, body) {
+  async update(id: string, payload: UpdateUserDto) {
     return this.usersRepository.update(
       {
-        first_name: body.first_name,
-        last_name: body.last_name,
-        phone: body.phone,
-        email: body.email
+        first_name: payload.first_name,
+        last_name: payload.last_name,
+        phone: payload.phone,
+        email: payload.email
       },
       {
         where: { id }

@@ -4,6 +4,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @ApiTags('users')
 @UseGuards(JwtAuthGuard)
@@ -23,8 +24,8 @@ export class UsersController {
   }
   
   @Patch(':id')
-  update(@Param('id') id: string, @Body() body) {
-    return this.usersService.update(id, body);
+  update(@Param('id') id: string, @Body() payload: UpdateUserDto) {
+    return this.usersService.update(id, payload);
   }
   
   @Delete(':id')
