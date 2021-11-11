@@ -7,6 +7,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RolesGuard } from '../../guards/roles.guard';
 import { Roles } from '../../decorators/roles.decorator';
+import { ROLES } from '../../shared/constants/roles.enum';
 
 @ApiTags('users')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -16,7 +17,7 @@ export class UsersController {
   }
   
   @Get()
-  @Roles('admin')
+  @Roles(ROLES.MANAGER)
   findAll() {
     return this.usersService.findAllUsers();
   }

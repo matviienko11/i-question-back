@@ -6,6 +6,7 @@ import { QuestionsService } from './questions.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../guards/roles.guard';
 import { Roles } from '../../decorators/roles.decorator';
+import { ROLES } from '../../shared/constants/roles.enum';
 
 @ApiTags('questions')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -27,13 +28,13 @@ export class QuestionsController {
   }
   
   @Post('new-question')
-  @Roles('admin')
+  @Roles(ROLES.MANAGER)
   create(@Body() body) {
     return this.questionsService.create(body);
   }
   
   @Patch(':id')
-  @Roles('admin')
+  @Roles(ROLES.MANAGER)
   update(
     @Param('id') id: string,
     @Body() body) {
@@ -41,7 +42,7 @@ export class QuestionsController {
   }
   
   @Delete(':id')
-  @Roles('admin')
+  @Roles(ROLES.MANAGER)
   delete(@Param() id) {
     return this.questionsService.delete(id);
   }
