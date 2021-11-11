@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 import { usersProviders } from '../../providers/users.providers';
 import { HashHelper } from '../../helpers/hash.helper';
 import { JwtHelper } from '../../helpers/jwt.helper';
-import { JwtStrategy } from './jwt.strategy';
+import { JwtStrategy } from './guards/jwt.strategy';
 
 @Module({
   imports: [

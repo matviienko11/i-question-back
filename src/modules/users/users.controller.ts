@@ -3,24 +3,27 @@ import { Body, Controller, Delete, Get, Param, Patch, UseGuards } from '@nestjs/
 import { ApiTags } from '@nestjs/swagger';
 
 import { UsersService } from './users.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { RolesGuard } from '../../guards/roles.guard';
+import { Roles } from '../../decorators/roles.decorator';
 
 @ApiTags('users')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {
   }
   
   @Get()
+  @Roles('admin')
   findAll() {
     return this.usersService.findAllUsers();
   }
   
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id)
+    return this.usersService.findOne(id);
   }
   
   @Patch(':id')

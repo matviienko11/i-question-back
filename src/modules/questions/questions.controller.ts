@@ -3,10 +3,12 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } f
 import { ApiTags } from '@nestjs/swagger';
 
 import { QuestionsService } from './questions.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../../guards/roles.guard';
+import { Roles } from '../../decorators/roles.decorator';
 
 @ApiTags('questions')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('questions')
 export class QuestionsController {
   constructor(private questionsService: QuestionsService) {
@@ -25,11 +27,13 @@ export class QuestionsController {
   }
   
   @Post('new-question')
+  @Roles('admin')
   create(@Body() body) {
     return this.questionsService.create(body);
   }
   
   @Patch(':id')
+  @Roles('admin')
   update(
     @Param('id') id: string,
     @Body() body) {
@@ -37,6 +41,7 @@ export class QuestionsController {
   }
   
   @Delete(':id')
+  @Roles('admin')
   delete(@Param() id) {
     return this.questionsService.delete(id);
   }
