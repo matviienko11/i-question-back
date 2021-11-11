@@ -32,19 +32,11 @@ export class AuthService {
     if (user) {
       const isEqual = await this.hashHelper.compareHashes(payload.password, user.password);
       if (!isEqual) return { message: 'Wrong password' };
-      return await this.jwtHelper.assignToken(user);
+      const token = await this.jwtHelper.assignToken(user);
+      return { token, userInfo: user };
     } else {
       return { message: 'Wrong email' };
     }
   }
   
-  async getUserInfo(body) {
-    const user = await this.usersRepository.findOne({ where: { email: body.email } });
-    return {
-      id: user.id,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      email: user.email
-    };
-  }
 }
