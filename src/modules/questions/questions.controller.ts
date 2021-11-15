@@ -43,7 +43,7 @@ export class QuestionsController {
   
   @Delete(':id')
   @Roles(ROLES.MANAGER)
-  delete(@Param() id) {
+  delete(@Param('id') id) {
     return this.questionsService.delete(id);
   }
 }
