@@ -15,7 +15,8 @@ export class QuestionsService {
   async findAllPaginated(currentPage, limit) {
     const { count, rows: data } = await this.questionsRepository.findAndCountAll({
       offset: (currentPage - 1) * limit,
-      limit: Number(limit)
+      limit: Number(limit),
+      order: [['createdAt', 'DESC']]
     });
     const totalPages = Math.ceil(count / limit);
     return {
