@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 
 import { v4 as uuid } from 'uuid';
 
@@ -15,9 +15,10 @@ export class UserQuestionService {
   async findNewQuestion(userId) {
     const randomId = await this.handleRandomIdSelection(userId);
     if (!randomId) {
-      return {
-        message: 'Sorry, but no new questions for you'
-      };
+      throw new HttpException(
+        'Sorry, but no new questions for you',
+        HttpStatus.NOT_FOUND
+      );
     }
     return this.userQuestionRepository.create({
       id: uuid(),
