@@ -51,9 +51,4 @@ export class UserQuestionController {
     @Body() payload: SetStatDto) {
     return this.answerService.setStat(userId, questionId, payload);
   }
-
-  @Get(':questionId/stat')
-  getStat(@Param('questionId') questionId: string) {
-    return this.answerService.getStat(questionId);
-  }
 }

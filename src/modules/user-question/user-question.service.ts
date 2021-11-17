@@ -61,14 +61,25 @@ export class UserQuestionService {
     return this.userQuestionRepository.update(
       {
         difficulty: payload.difficulty,
-        rating: payload.rating
+        rating: payload.rating,
       },
       {
         where: { userId, questionId },
+      })
+      .then(() => {
+        return this.getAverage(questionId)
+          .then(({ averageDifficulty, averageRating }) => {
+            return this.questionsRepository.update(
+              {
+                average_difficulty: averageDifficulty,
+                average_rating: averageRating,
+              },
+              { where: { id: questionId } });
+          });
       });
   }
 
-  getStat(questionId) {
+  private getAverage(questionId) {
     return this.userQuestionRepository.findAll(
       { where: { questionId } })
       .then(data => {
@@ -80,8 +91,8 @@ export class UserQuestionService {
           .map(question => question.rating)
           .filter(i => !!i)
           .reduce((a, b, _, arr) => a + b / arr.length, 0);
-        return { averageDifficulty, averageRating }
-      })
+        return { averageDifficulty, averageRating };
+      });
   }
 
   private async handleRandomIdSelection(userId) {

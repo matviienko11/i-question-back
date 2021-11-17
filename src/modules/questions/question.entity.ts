@@ -10,6 +10,13 @@ export class Question extends Model {
   
   @Column
   question: string;
+
+  @Column(DataType.FLOAT(1))
+  average_difficulty: number;
+
+  @Column(DataType.FLOAT(1))
+  @Column
+  average_rating: number;
   
   @Default('other')
   @Column(DataType.ENUM('history', 'geography', 'economics', 'mathematics', 'languages', 'law', 'medicine', 'chemistry', 'biology', 'other'))
