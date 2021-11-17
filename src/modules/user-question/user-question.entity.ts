@@ -1,9 +1,20 @@
-import { BelongsTo, Column, DataType, Default, ForeignKey, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import {
+  AllowNull,
+  BelongsTo,
+  Column,
+  DataType,
+  Default,
+  ForeignKey,
+  Model,
+  PrimaryKey,
+  Table,
+} from 'sequelize-typescript';
 
 import { User } from '../users/user.entity';
 import { Question } from '../questions/question.entity';
 
 type Status = 'new' | 'pending' | 'answered';
+type Difficulty = 1 | 2 | 3 | 4 | 5;
 
 @Table
 export class UserQuestion extends Model {
@@ -32,5 +43,8 @@ export class UserQuestion extends Model {
   @Default('new')
   @Column(DataType.ENUM('new', 'pending', 'answered'))
   status: Status;
-  
+
+  @AllowNull
+  @Column(DataType.ENUM('1', '2', '3', '4', '5'))
+  difficulty: Difficulty;
 }

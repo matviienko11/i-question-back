@@ -33,13 +33,22 @@ export class UserQuestionController {
     return this.answerService.submitAnswer(req);
   }
   
-  @Patch(':userId/status/:questionId/')
+  @Patch(':userId/status/:questionId')
   setStatus(@Param('userId') userId: string, @Param('questionId') questionId: string, @Body() body) {
     return this.answerService.setStatus(userId, questionId, body);
   }
   
-  @Get('game/:userId/')
+  @Get('game/:userId')
   start(@Param('userId') userId: string) {
     return this.answerService.findNewQuestion(userId);
+  }
+
+  @Patch(':userId/set-difficulty/:questionId')
+  setDifficulty(
+    @Param('userId') userId: string,
+    @Param('questionId') questionId: string,
+    @Body() payload: number
+    ) {
+    return this.answerService.setDifficulty(userId, questionId, payload)
   }
 }

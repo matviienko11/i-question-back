@@ -7,11 +7,11 @@ import { Question } from '../questions/question.entity';
 
 @Injectable()
 export class UserQuestionService {
-  
+
   constructor(@Inject('USERS_QUESTIONS_REPOSITORY') private userQuestionRepository: typeof UserQuestion,
               @Inject('QUESTIONS_REPOSITORY') private questionsRepository: typeof Question) {
   }
-  
+
   async findNewQuestion(userId) {
     const randomId = await this.handleRandomIdSelection(userId);
     if (!randomId) {
@@ -29,14 +29,14 @@ export class UserQuestionService {
       include: [Question]
     }));
   }
-  
+
   submitAnswer(req) {
     return this.userQuestionRepository.update({
       answer: req.body.answer,
       status: 'pending'
     }, { where: { userId: req.params.userId, questionId: req.params.questionId } });
   }
-  
+
   setStatus(userId, questionId, body) {
     console.log(body.status)
     return this.userQuestionRepository.update(
@@ -44,19 +44,26 @@ export class UserQuestionService {
       { where: { userId, questionId } }
     );
   }
-  
+
   getAllAnswersByUser(userId) {
     return this.userQuestionRepository.findAll({ where: { userId } });
   }
-  
+
   getAllPendingQuestionsByUser(userId) {
     return this.userQuestionRepository.findAll({ where: { userId, status: 'pending' }, include: [Question] });
   }
-  
+
   getAllAnsweredQuestionsByUser(userId) {
     return this.userQuestionRepository.findAll({ where: { userId, status: 'answered' }, include: [Question] });
   }
-  
+
+  setDifficulty(userId, questionId, payload) {
+    return this.userQuestionRepository.update(
+      { difficulty: payload.difficulty },
+      { where: { userId, questionId },
+      })
+  }
+
   private async handleRandomIdSelection(userId) {
     const allQuestionsIds = await this.questionsRepository.findAll().then(questions => questions.map(q => q.id));
     const questionIdsFromTable = await this.userQuestionRepository.findAll({ where: { userId } }).then(data => data.map(i => i.questionId));
