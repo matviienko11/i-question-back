@@ -57,9 +57,12 @@ export class UserQuestionService {
     return this.userQuestionRepository.findAll({ where: { userId, status: 'answered' }, include: [Question] });
   }
 
-  setDifficulty(userId, questionId, payload) {
+  setStat(userId, questionId, payload) {
     return this.userQuestionRepository.update(
-      { difficulty: payload.difficulty },
+      {
+        difficulty: payload.difficulty,
+        rating: payload.rating
+      },
       {
         where: { userId, questionId },
       });
@@ -69,10 +72,15 @@ export class UserQuestionService {
     return this.userQuestionRepository.findAll(
       { where: { questionId } })
       .then(data => {
-        return data
-          .map(question => Number(question.difficulty))
+        const averageDifficulty = data
+          .map(question => question.difficulty)
           .filter(i => !!i)
           .reduce((a, b, _, arr) => a + b / arr.length, 0);
+        const averageRating = data
+          .map(question => question.rating)
+          .filter(i => !!i)
+          .reduce((a, b, _, arr) => a + b / arr.length, 0);
+        return { averageDifficulty, averageRating }
       })
   }
 

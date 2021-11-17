@@ -4,6 +4,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { UserQuestionService } from './user-question.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { SetStatDto } from './dto/set-stat.dto';
 
 @ApiTags('answers')
 @UseGuards(JwtAuthGuard)
@@ -43,13 +44,12 @@ export class UserQuestionController {
     return this.answerService.findNewQuestion(userId);
   }
 
-  @Patch(':userId/set-difficulty/:questionId')
-  setDifficulty(
+  @Patch(':userId/set-stat/:questionId')
+  setStat(
     @Param('userId') userId: string,
     @Param('questionId') questionId: string,
-    @Body() payload: number
-    ) {
-    return this.answerService.setDifficulty(userId, questionId, payload)
+    @Body() payload: SetStatDto) {
+    return this.answerService.setStat(userId, questionId, payload);
   }
 
   @Get(':questionId/stat')
