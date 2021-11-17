@@ -17,31 +17,31 @@ export class UserQuestionService {
     if (!randomId) {
       throw new HttpException(
         'Sorry, but no new questions for you',
-        HttpStatus.NOT_FOUND
+        HttpStatus.NOT_FOUND,
       );
     }
     return this.userQuestionRepository.create({
       id: uuid(),
       userId,
-      questionId: randomId
+      questionId: randomId,
     }).then(() => this.userQuestionRepository.findOne({
       where: { userId, questionId: randomId },
-      include: [Question]
+      include: [Question],
     }));
   }
 
   submitAnswer(req) {
     return this.userQuestionRepository.update({
       answer: req.body.answer,
-      status: 'pending'
+      status: 'pending',
     }, { where: { userId: req.params.userId, questionId: req.params.questionId } });
   }
 
   setStatus(userId, questionId, body) {
-    console.log(body.status)
+    console.log(body.status);
     return this.userQuestionRepository.update(
       { status: body.status },
-      { where: { userId, questionId } }
+      { where: { userId, questionId } },
     );
   }
 
@@ -60,7 +60,19 @@ export class UserQuestionService {
   setDifficulty(userId, questionId, payload) {
     return this.userQuestionRepository.update(
       { difficulty: payload.difficulty },
-      { where: { userId, questionId },
+      {
+        where: { userId, questionId },
+      });
+  }
+
+  getStat(questionId) {
+    return this.userQuestionRepository.findAll(
+      { where: { questionId } })
+      .then(data => {
+        return data
+          .map(question => Number(question.difficulty))
+          .filter(i => !!i)
+          .reduce((a, b, _, arr) => a + b / arr.length, 0);
       })
   }
 
