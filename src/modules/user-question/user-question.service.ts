@@ -46,7 +46,7 @@ export class UserQuestionService {
   }
 
   getAllAnswersByUser(userId) {
-    return this.userQuestionRepository.findAll({ where: { userId } });
+    return this.userQuestionRepository.findAll({ where: { userId }, include: [Question] });
   }
 
   getAllPendingQuestionsByUser(userId) {
