@@ -23,8 +23,10 @@ export class QuestionsController {
   @Get('paginated')
   findAllPaginated(
     @Query('page') page = 1,
-    @Query('limit') limit = 3) {
-    return this.questionsService.findAllPaginated(page, limit);
+    @Query('limit') limit = 3,
+    @Query('search') search: string
+  ) {
+    return this.questionsService.findAllPaginated(page, limit, search);
   }
   
   @Post('new-question')
