@@ -76,7 +76,7 @@ export class UserQuestionService {
               },
               { where: { id: questionId } });
           });
-      });
+      }).then(() => this.userQuestionRepository.findOne({ where: { userId, questionId }, include: [Question] }));
   }
 
   private getAverage(questionId) {
