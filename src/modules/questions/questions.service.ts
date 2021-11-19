@@ -7,6 +7,7 @@ import { Question } from './question.entity';
 
 @Injectable()
 export class QuestionsService {
+
   constructor(@Inject('QUESTIONS_REPOSITORY') private questionsRepository: typeof Question) {
   }
 
@@ -14,11 +15,14 @@ export class QuestionsService {
     return this.questionsRepository.findAll<Question>();
   }
 
-  async findAllPaginated(currentPage, limit, search) {
+  async findAllPaginated(currentPage, limit, search, question = 'asc') {
     const { count, rows: data } = await this.questionsRepository.findAndCountAll({
       offset: (currentPage - 1) * limit,
       limit: Number(limit),
-      order: [['createdAt', 'DESC']],
+      order: [
+        // ['createdAt', 'DESC'],
+        ['question', `${question}`],
+      ],
       where: {
         question:
           {

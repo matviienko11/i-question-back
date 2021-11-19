@@ -12,6 +12,7 @@ import { ROLES } from '../../shared/constants/roles.enum';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('questions')
 export class QuestionsController {
+
   constructor(private questionsService: QuestionsService) {
   }
   
@@ -24,9 +25,10 @@ export class QuestionsController {
   findAllPaginated(
     @Query('page') page = 1,
     @Query('limit') limit = 3,
-    @Query('search') search: string
+    @Query('search') search: string,
+    @Query('question') question: string,
   ) {
-    return this.questionsService.findAllPaginated(page, limit, search);
+    return this.questionsService.findAllPaginated(page, limit, search, question);
   }
   
   @Post('new-question')
