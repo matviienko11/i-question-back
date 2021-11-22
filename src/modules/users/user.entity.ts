@@ -9,6 +9,9 @@ export class User extends Model {
   id: string;
   
   @Column
+  profile_image: string;
+  
+  @Column
   first_name: string;
   
   @Column

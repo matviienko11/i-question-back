@@ -1,12 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import { User } from './user.entity';
-import { HashHelper } from '../../helpers/hash.helper';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(@Inject('USERS_REPOSITORY') private usersRepository: typeof User, private hashHelper: HashHelper) {
+  constructor(@Inject('USERS_REPOSITORY') private usersRepository: typeof User) {
   }
   
   async findAllUsers() {
@@ -17,9 +16,10 @@ export class UsersService {
     return this.usersRepository.findOne({ where: { id } });
   }
   
-  async update(id: string, payload: UpdateUserDto) {
+  async update(id: string, payload: Partial<UpdateUserDto>) {
     return this.usersRepository.update(
       {
+        profile_image: payload.profile_image,
         first_name: payload.first_name,
         last_name: payload.last_name,
         phone: payload.phone,
